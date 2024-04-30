@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            background: #1c1c1c;
+        }
+        .wrapper {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heading {
+            color: white;        
+        }
+        button {
+            height: 100px;
+            width: 100px;
+            font-size: 48px;
+            border-radius: 30px;
+            cursor: pointer;
+            background-color: white;
+        }
+        .resultcon {
+            font-size: 2rem;
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <h1 class="heading">Rock Scissor and Paper</h1>
+        <div class="buttons">
+            <button class="click" value="Rock">✊</button>
+            <button class="click" value="Paper">🤚</button>
+            <button class="click" value="Scissors">✌</button>
+        </div>
+        <div class="resultcon">
+            <div id="player-score"></div>
+            <div id="hands"></div>
+            <div id="result"></div>
+            <button class="click" id="endGameButton">🔴</button>
+        </div>
+    </div>
+    <script>
+        function comp() {
+            var list = ['Rock', 'Paper', 'Scissors']
+            var computerChoice = list[Math.floor(Math.random() * 3)]
+            return computerChoice
+        }
+        function getscore(cc, playerChoice) {
+            if (playerChoice === cc) {
+                score = 0
+            }
+            else if ((playerChoice === 'Rock' && cc === 'Scissors')
+                || (playerChoice === "Paper" && cc === "Rock")
+                || (playerChoice === "Scissors" && cc === "Paper")) {
+                score = 1
+            }
+            else {
+                score = -1
+            }
+            return score
+        }
+        function finalresult(score, cc, playerChoice) {
+            var result = document.getElementById('result')
+            switch (score) {
+                case -1:
+                    result.innerText = `You Lose!`
+                    break;
+                case 0:
+                    result.innerText = `It's a Draw!`
+                    break;
+                case 1:
+                    result.innerText = `You Win!`
+                    break;
+            }
+            var playerScore = document.getElementById('player-score')
+            var hands = document.getElementById('hands')
+            playerScore.innerText = `${Number(playerScore.innerText) + score}`
+            hands.innerText = `👱 ${playerChoice} vs 🤖 ${cc}`
+        }
+        function playgame() {
+            var user = document.querySelectorAll(".click")
+            user.forEach(i => {
+                i.onclick = () => {
+                    var playerChoice = i.value
+                    var cc = comp()
+                    var score = getscore(cc, playerChoice)
+                    finalresult(score, cc, playerChoice)
+                }
+
+            })
+            let endgame = document.getElementById("endGameButton")
+            endgame.onclick = () => theend()
+        }
+        function theend() {
+            let playerScore = document.getElementById('player-score')
+            let hands = document.getElementById('hands')
+            let result = document.getElementById('result')
+            playerScore.innerText = ' '
+            hands.innerText = ' '
+            result.innerText = ' '
+        }
+        playgame()
+    </script>
+</body>
+
+</html>
